@@ -1,8 +1,8 @@
 function Home() {
   return (
     <div>
-      <h1>TabNews</h1>
-      <p>Este é um lembrete de que valeu a pena tentar de novo</p>
+      <h1>Juju</h1>
+      <p>Amo tu, tatu. S2</p>
     </div>
   );
 }
