@@ -1,9 +1,11 @@
 import database from "infra/database";
 
 async function status(req, res) {
-  const result = await database.query("SELECT 1 + 1 as sum;");
-  console.log(result.rows);
-  res.status(200).json({ status: "testando acentos. Será que funciona?" });
+  // gera a data/hora exata em que a rota foi chamada, já no formato ISO (padrão internacional).
+  const updatedAt = new Date().toISOString();
+  res.status(200).json({
+    updated_at: updatedAt,
+  });
 }
 
 export default status;
