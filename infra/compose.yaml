@@ -3,6 +3,6 @@ services:
     container_name: eunaoeradev-postgres
     image: "postgres:16.10-alpine3.22"
     env_file:
-      - ../.env
+      - ../.env.development
     ports:
       - "5432:5432"
