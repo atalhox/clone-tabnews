@@ -37,7 +37,11 @@ describe("GET /api/v1/status", () => {
     });
 
     test("should return database max_connections properly", () => {
-      expect(responseBody.dependencies.database.max_connections).toEqual("100");
+      expect(responseBody.dependencies.database.max_connections).toEqual(100);
+    });
+
+    test("should return database opened_connections properly", () => {
+      expect(responseBody.dependencies.database.opened_connections).toEqual(1);
     });
   });
 });
