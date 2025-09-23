@@ -7,16 +7,37 @@ describe("GET /api/v1/status", () => {
     responseBody = await response.json();
   });
 
-  test("should return status 200", () => {
-    expect(response.status).toBe(200);
+  describe("should return correct status code and structure", () => {
+    it("should return correct status code", () => {
+      expect(response.status).toBe(200);
+    });
+
+    it("should return the correct response body structure", () => {
+      expect(responseBody).toMatchObject({
+        updated_at: expect.any(String),
+        dependencies: {
+          database: {
+            version: expect.any(String),
+          },
+        },
+      });
+    });
   });
 
-  test("should return updated_at properly", () => {
-    // responseBody.updated_at = "2025-09-19T07:21:32.123Z"
-    expect(responseBody.updated_at).toBeDefined();
+  describe("should return json data properly", () => {
+    test("should return updated_at properly", () => {
+      expect(responseBody.updated_at).toBeDefined();
 
-    //cria um novo objeto Date a partir da string para validar strings aleatórias.
-    const parsedUpdatedAt = new Date(responseBody.updated_at).toISOString();
-    expect(responseBody.updated_at).toEqual(parsedUpdatedAt);
+      const parsedUpdatedAt = new Date(responseBody.updated_at).toISOString();
+      expect(responseBody.updated_at).toEqual(parsedUpdatedAt);
+    });
+
+    test("should return database version properly", () => {
+      expect(responseBody.dependencies.database.version).toEqual("16.10");
+    });
+
+    test("should return database max_connections properly", () => {
+      expect(responseBody.dependencies.database.max_connections).toEqual("100");
+    });
   });
 });
