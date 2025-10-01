@@ -7,7 +7,7 @@ async function query(queryObject) {
     database: process.env.POSTGRES_DB,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
-    SSL: getSSLValues(),
+    ssl: getSSLValues(),
   });
 
   try {
@@ -27,11 +27,19 @@ export default {
 };
 
 function getSSLValues() {
+  if (process.env.NODE_ENV === "development") {
+    // Docker local/Postgres sem SSL
+    return false;
+  }
+
   if (process.env.POSTGRES_CA_CERT) {
+    // Produção com certificado em variável de ambiente
     return {
-      ca: process.env.POSTGRES_CA_CERT,
+      ca: process.env.POSTGRES_CA_CERT.replace(/\\n/g, "\n"),
+      rejectUnauthorized: true,
     };
   }
 
-  return process.env.NODE_ENV === "development" ? false : true; // necessário para Neon
+  // Produção no Neon sem CA explícito → aceita Let’s Encrypt
+  return { rejectUnauthorized: false };
 }
